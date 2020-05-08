@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Detailed Roster - EdgarAlexander&trade; QuickGrade</title>
+
+        <script type="text/javascript">
+            var studentid;
+            var studentname;
+            function deleteStudent(studentid, studentname)
+                {
+                var deleteStudentConfirm = confirm("Are you sure that you want to delete student " + studentname + " from the database?");
+                if (deleteStudentConfirm == true)
+                    {
+                    window.location = "/student_delete?id=" + studentid;
+                    }
+                else
+                    {
+                    void(0);
+                    }
+                }
+        </script>
+    </head>
+
+    <body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>EdgarAlexander&trade; QuickGrade</h1>
+      <h4>IS 668 Final Project</h4>
+    <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+            <li>Welcome, {{ current_user.get_id() }}. <a href="{{ url_for('index') }}">Home</a> &bull; <a href="{{ url_for('logout') }}">Log out</a></li>
+        {% else %}
+            <li>You are not logged in and will not be able to view certain content or make changes.<br /><a href="{{ url_for('login') }}">Log in</a></li>
+        {% endif %}
+    </ul>
+    </div>
+
+    <div class="row">
+        <h2>Detailed Roster - BM 099 The Science of Music</h2>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-12">
+        <a href="#addfunctions">Add Student</a>
+        <br />
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Major</th>
+                        <th>E-mail Address</th>
+                        <th>ID</th>
+                        <th>Grade Average</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for student in students %}
+                    <tr>
+                        <td>{{ student.last_name }}</td>
+                        <td>{{ student.first_name }}</td>
+                        <td>{{ student.major_program }}</td>
+                        <td><a href="mailto:{{ student.email_address }}">{{ student.email_address }}</a></td>
+                        <td>{{ student.id }}</td>
+                        <td>{{ getaverage(student.id) }}%</td>
+                        <td style="line-height: 150%;">
+                            <a href="/student_grades?id={{ student.id }}">Details</a><br />
+                            <a href="javascript:deleteStudent('{{ student.id }}', '{{ student.first_name }} {{ student.last_name }}');">Delete</a>
+                        </td>
+                    </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<a name="addfunctions"></a>
+
+    <div class="row">
+        <div class="col-4">
+            <h5>Add Student</h5>
+            <div style="line-height: 150%;">
+                <form action="/student_add" method="POST">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="last_name" placeholder="Last Name" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="first_name" placeholder="First Name" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="major_program" placeholder="Major/Program" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="email_address" placeholder="E-mail Address" />
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Add Student">
+                </form>
+            </div>
+        </div>
+    </div>
+
+<br />
+        </div><!-- /.container -->
+    </body>
+</html>
