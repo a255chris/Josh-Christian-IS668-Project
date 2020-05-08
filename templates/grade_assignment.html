@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Grade Assignment - EdgarAlexander&trade; QuickGrade</title>
+    </head>
+
+    <body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>EdgarAlexander&trade; QuickGrade</h1>
+      <h4>IS 668 Final Project</h4>
+    <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+            <li>Welcome, {{ current_user.get_id() }}. <a href="{{ url_for('index') }}">Home</a> &bull; <a href="{{ url_for('logout') }}">Log out</a></li>
+        {% else %}
+            <li>You are not logged in and will not be able to view certain content or make changes.<br /><a href="{{ url_for('login') }}">Log in</a></li>
+        {% endif %}
+    </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+        <h3>Grade Assignment</h3>
+
+                <form action="/grade_assignment_do" method="POST">
+                    <div class="form-group">
+                        <select name="student" class="form-control">
+                            <option value="0">-- Select a Student --</option>
+                            {% for student in students %}
+                                <option value="{{ student.id }}">{{ student.last_name.upper() }}, {{ student.first_name.upper() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="assignment" class="form-control">
+                            <option value="0">-- Select an Assignment --</option>
+                            {% for assignment in assignments %}
+                                <option value="{{ assignment.id }}">{{ assignment.assignment_name.upper() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="points" placeholder="100" class="form-control" /> (Integers only. No symbols.)
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Grade Assignment">
+                </form>
+        </div>
+    </div>
+
+<br />
+        </div><!-- /.container -->
+    </body>
+</html>
