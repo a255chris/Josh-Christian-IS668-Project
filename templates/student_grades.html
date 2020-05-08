@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>{{ student.first_name }} {{ student.last_name }}'s Grades - EdgarAlexander&trade; QuickGrade</title>
+
+        <script type="text/javascript">
+            var studentid;
+            var studentname;
+            function deleteStudent(studentid, studentname)
+                {
+                var deleteStudentConfirm = confirm("Are you sure you want to delete student " + studentname + " from the database?");
+                if (deleteStudentConfirm == true)
+                    {
+                    window.location = "/student_delete?id=" + studentid;
+                    }
+                else
+                    {
+                    void(0);
+                    }
+                }
+        </script>
+    </head>
+
+    <body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>EdgarAlexander&trade; QuickGrade</h1>
+      <h4>IS 668 Final Project</h4>
+    <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+            <li>Welcome, {{ current_user.get_id() }}. <a href="{{ url_for('index') }}">Home</a> &bull; <a href="{{ url_for('logout') }}">Log out</a></li>
+        {% else %}
+            <li>You are not logged in and will not be able to view certain content or make changes.<br /><a href="{{ url_for('login') }}">Log in</a></li>
+        {% endif %}
+    </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+        <h3>Gradebook for {{ student.last_name.upper() }}, {{ student.first_name.upper() }}</h3>
+        <a href="javascript:deleteStudent('{{ student.id }}', '{{ student.first_name }} {{ student.last_name }}');">Delete This Student</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Assignment Name &amp; Description</th>
+                        <th>Grade</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for grade in grades %}
+                    <tr>
+                        <td>
+                            <strong>{{ grade.assignment.assignment_name }}</strong><br />
+                            <small>{{ grade.assignment.assignment_desc }}</small>
+                        </td>
+                        <td>{{ grade.points }}%</td>
+                        <td style="line-height: 150%;">
+                            <a href="/modify_grade?id={{ grade.id }}">Modify Grade</a><br />
+                        </td>
+                    </tr>
+            {% endfor %}
+            {% if gradeavg == 0 %}
+                    <tr>
+                        <td colspan="2">This student has no grades for any assignments.</td>
+                        <td>
+                            <a href="/grade_assignment">Grade Assignment</a>
+                        </td>
+                    </tr>
+            {% endif %}
+            {% if gradeavg != 0 %}
+                    <tr>
+                        <td style="text-align: right;">
+                            <strong>Course Average:</strong>
+                        </td>
+                        <td>{{ gradeavg }}%</td>
+                        <td></td>
+                    </tr>
+            {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<br />
+        </div><!-- /.container -->
+    </body>
+</html>
