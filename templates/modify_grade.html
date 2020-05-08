@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Modify Grade - EdgarAlexander&trade; QuickGrade</title>
+    </head>
+
+    <body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>EdgarAlexander&trade; QuickGrade</h1>
+      <h4>IS 668 Final Project</h4>
+    <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+            <li>Welcome, {{ current_user.get_id() }}. <a href="{{ url_for('index') }}">Home</a> &bull; <a href="{{ url_for('logout') }}">Log out</a></li>
+        {% else %}
+            <li>You are not logged in and will not be able to view certain content or make changes.<br /><a href="{{ url_for('login') }}">Log in</a></li>
+        {% endif %}
+    </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+        <h3>Modify Grade</h3>
+        <h6>Assignment {{ assignment.assignment_name.upper() }} for student {{ student.last_name.upper() }}, {{ student.first_name.upper() }}</h6>
+
+        <p>The current grade for this assignment is <span style="font-weight: bold; text-decoration: underline;">{{ grade.points }}%</span>.</p>
+        <p>Would you like to change it?</p>
+            <div class="row">
+                <div class="col-4">
+                <form action="/modify_grade_do" method="POST">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="new_grade" placeholder="{{ grade.points }}" /> (Integers only. No symbols.)
+                    </div>
+                    <input type="hidden" name="gradeid" value="{{ grade.id }}" />
+                    <input type="submit" class="btn btn-success" value="Update Grade">
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<br />
+        </div><!-- /.container -->
+    </body>
+</html>
