@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <title>Login - EdgarAlexander&trade; QuickGrade</title>
+    </head>
+
+    <body>
+            <div class="container">
+                <div class="jumbotron">
+                    <h1>EdgarAlexander&trade; QuickGrade</h1>
+                    <h4>IS 668 Final Project</h4>
+                </div>
+
+        <div class="container">
+
+
+{% if error %}
+<div class="row">
+    <div class="alert alert-warning" role="alert">
+        Incorrect username or password
+    </div>
+</div>
+{% endif %}
+
+<br />
+
+<div class="row">
+        <h2>Log In</h2>
+</div>
+
+<br />
+
+<div class="row">
+                <form action="." method="POST">
+                  <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input class="form-control" id="username" name="username" placeholder="Enter your username">
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                  </div>
+                  <button type="submit" class="btn btn-success">Log in</button><br /><br />
+                </form>
+            </div>
+
+        </div>
+
+    </body>
+</html>
