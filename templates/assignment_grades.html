@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>{{ assignment.assignment_name }} Assignment Grades - EdgarAlexander&trade; QuickGrade</title>
+
+        <script type="text/javascript">
+            var assignmentid;
+            var assignmentname;
+            function deleteAssignment(assignmentid, assignmentname)
+                {
+                var deleteAssignmentConfirm = confirm("Are you sure that you want to delete assignment " + assignmentname + " from the database?");
+                if (deleteAssignmentConfirm == true)
+                    {
+                    window.location = "/assignment_delete?id=" + assignmentid;
+                    }
+                else
+                    {
+                    void(0);
+                    }
+                }
+        </script>
+    </head>
+
+    <body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>EdgarAlexander&trade; QuickGrade</h1>
+      <h4>IS 668 Final Project</h4>
+    <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+            <li>Welcome, {{ current_user.get_id() }}. <a href="{{ url_for('index') }}">Home</a> &bull; <a href="{{ url_for('logout') }}">Log out</a></li>
+        {% else %}
+            <li>You are not logged in and will not be able to view certain content or make changes.<br /><a href="{{ url_for('login') }}">Log in</a></li>
+        {% endif %}
+    </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+        <h3>All Grades for Assignment {{ assignment.assignment_name.upper() }}</h3>
+        <a href="javascript:deleteAssignment('{{ assignment.id }}', '{{ assignment.assignment_name }}');">Delete This Assignment</a>
+        <br />
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Student Last Name</th>
+                        <th>Student First Name</th>
+                        <th>Grade</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for grade in grades %}
+                    <tr>
+                        <td>{{ grade.student.last_name }}</td>
+                        <td>{{ grade.student.first_name }}</td>
+                        <td>{{ grade.points }}%</td>
+                        <td>
+                            <a href="/modify_grade?id={{ grade.id }}">Modify Grade</a><br />
+                        </td>
+                    </tr>
+            {% endfor %}
+            {% if gradeavg == 0 %}
+                    <tr>
+                        <td colspan="3">This assignment has no grades for any students.</td>
+                        <td>
+                            <a href="/grade_assignment">Grade Assignment</a>
+                        </td>
+                    </tr>
+            {% endif %}
+            {% if gradeavg != 0 %}
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <strong>Average Assignment Score:</strong>
+                        </td>
+                        <td>{{ gradeavg }}%</td>
+                        <td></td>
+                    </tr>
+            {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<br />
+        </div><!-- /.container -->
+    </body>
+</html>
